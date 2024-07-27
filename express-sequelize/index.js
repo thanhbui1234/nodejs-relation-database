@@ -10,6 +10,9 @@ app.use("", router);
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Middleware to parse URL-encoded bodies
+app.use(express.urlencoded({ extended: true }));
+
 app.post("/users", async (req, res) => {
   try {
     const user = await User.create(req.body);
@@ -18,20 +21,6 @@ app.post("/users", async (req, res) => {
     console.error(error);
     res.status(500).send("An error occurred while creating the user");
   }
-});
-app.get("/users", async (req, res) => {
-  try {
-    const user = await User.findAll();
-    res.send(user);
-  } catch (error) {}
-});
-app.get("/users/:id", async (req, res) => {
-  try {
-    const user = await User.findOne({
-      where: { id: req.params.id },
-    });
-    res.send(user);
-  } catch (error) {}
 });
 
 app.patch("/users/:id", async (req, res) => {
