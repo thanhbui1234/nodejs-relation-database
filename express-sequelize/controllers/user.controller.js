@@ -1,6 +1,18 @@
 import UserService from "../services/user.service.js";
 
 class UserController {
+  createUse = async (req, res) => {
+    try {
+      const user = await UserService.createUser(req.body);
+      return res.json({
+        message: "create users retri`eved successfully",
+        data: user,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   getAllUsers = async (req, res) => {
     try {
       const user = await UserService.getAllUsers();

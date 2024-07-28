@@ -3,6 +3,10 @@ import User from "../models/user.model.js";
 export default class UserService {
   constructor() {}
 
+  static async createUser(body) {
+    return await User.create(body);
+  }
+
   static async getAllUsers() {
     return await User.findAll();
   }

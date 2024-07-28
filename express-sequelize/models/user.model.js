@@ -9,11 +9,9 @@ User.init(
   {
     username: {
       type: DataTypes.STRING,
-      allowNull: true,
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: true,
       unique: true,
     },
     password: {
