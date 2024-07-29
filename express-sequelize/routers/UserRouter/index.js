@@ -1,15 +1,16 @@
 import { Router } from "express";
 import UserController from "../../controllers/user.controller.js";
+import catchAsync from "../../middlewares/catchAsync.mileware.js";
 const router = Router();
 
 router
   .route("/")
-  .get(UserController.getAllUsers)
-  .post(UserController.createUse);
+  .get(catchAsync(UserController.getAllUsers))
+  .post(catchAsync(UserController.createUse));
 router
   .route("/:id")
-  .get(UserController.getUserById)
-  .delete(UserController.deleteUserById)
-  .patch(UserController.updateUserByID);
+  .get(catchAsync(UserController.getUserById))
+  .delete(catchAsync(UserController.deleteUserById))
+  .patch(catchAsync(UserController.updateUserByID));
 
 export default router;

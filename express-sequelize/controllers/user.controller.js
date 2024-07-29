@@ -3,13 +3,14 @@ import UserService from "../services/user.service.js";
 class UserController {
   createUse = async (req, res) => {
     try {
+      console.log(req.body);
       const user = await UserService.createUser(req.body);
       return res.json({
-        message: "create users retri`eved successfully",
+        message: "create users retrieved successfully",
         data: user,
       });
     } catch (error) {
-      console.log(error);
+      res.status(500).json({ message: "Failed to create user", error: error.message });
     }
   };
 
@@ -21,7 +22,7 @@ class UserController {
         data: user,
       });
     } catch (error) {
-      console.log(error);
+      throw new Error('get fail');
     }
   };
 
@@ -33,7 +34,7 @@ class UserController {
         data: user,
       });
     } catch (error) {
-      console.log(error);
+      throw new Error('get fail');
     }
   };
 
@@ -53,7 +54,7 @@ class UserController {
         data: user,
       });
     } catch (error) {
-      console.log(error);
+      throw new Error('update user  fail');
     }
   };
 
@@ -64,7 +65,7 @@ class UserController {
         message: "Delete users by id retrieved successfully",
       });
     } catch (error) {
-      console.log(error);
+      throw new Error('delete user fail');
     }
   };
 }
