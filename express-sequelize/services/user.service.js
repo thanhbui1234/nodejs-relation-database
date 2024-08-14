@@ -7,8 +7,24 @@ export default class UserService {
     return await User.create(body);
   }
 
-  static async getAllUsers() {
-    return await User.findAll();
+  static async getAllUsers(req) {
+//  logicn pagination 
+  // i want check if use  qury param is a random string or not number is db
+  const { page, size } = req.query;
+
+    let  perPage = 0;
+    let  pageSize = 10;
+
+    if(!Number(isNaN(page)) && page > 0) {
+      perPage = page;
+    }
+    if(!Number(isNaN(size)) && size > 0 && size <10) {
+      pageSize = size;
+    }
+      return await User.findAndCountAll({
+        limit: pageSize,
+        offset: perPage * pageSize,
+      });
   }
 
   static async getUser(userId) {

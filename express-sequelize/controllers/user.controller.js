@@ -1,3 +1,4 @@
+import { InvalidExcappableError } from "../middlewares/erros.middleware.js";
 import UserService from "../services/user.service.js";
 
 class UserController {
@@ -10,38 +11,42 @@ class UserController {
         data: user,
       });
     } catch (error) {
-      res.status(500).json({ message: "Failed to create user", error: error.message });
+      res.staus(500).json({ message: "Failed to create user", error: error.message });
     }
   };
 
   getAllUsers = async (req, res) => {
     try {
-      const user = await UserService.getAllUsers();
-      return res.json({
-        message: "Users retrieved successfully",
-        data: user,
+      const user = await UserService.getAllUsers(req);
+      return res.send({
+        message: "Users retrieved ",
+        content: user.rows,
+        totalPage : Math.ceil(user.count /req.query.size )
       });
     } catch (error) {
       throw new Error('get fail');
     }
   };
 
-  getUserById = async (req, res) => {
+  getUserById = async (req, res,next) => {
     try {
-      const user = await UserService.getUser(req.params.id);
+      const id = req.params.id;
+      if (isNaN(id)) {
+         next (InvalidExcappableError());
+      }
+      const user = await UserService.getUser(id);
       return res.json({
-        message: "Users by id retrieved successfully",
+        message: "User retrieved successfully",
         data: user,
       });
     } catch (error) {
-      throw new Error('get fail');
+      throw new Error('Failed to get user');
     }
   };
 
   updateUserByID = async (req, res) => {
     try {
-      console.log("Updating user with ID:", req.params.id);
-      console.log("Update data:", req.body);
+
       const user = await UserService.updateUser(req.params.id, req.body);
       if (user[0] === 0) {
         // Sequelize returns an array where the first element is the number of affected rows
